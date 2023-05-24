@@ -14,43 +14,43 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  final List<String> selectedAnswers = [];
-  String activeScreen = 'start-screen';
+  final List<String> _selectedAnswers = [];
+  String _activeScreen = 'start-screen';
 
-  void switchScreen() {
+  void _switchScreen() {
     setState(() {
-      activeScreen = 'questions-screen';
+      _activeScreen = 'questions-screen';
     });
   }
 
-  void chooseAnswer(String answer) {
-    selectedAnswers.add(answer);
+  void _chooseAnswer(String answer) {
+    _selectedAnswers.add(answer);
 
-    if (selectedAnswers.length == questions.length) {
+    if (_selectedAnswers.length == questions.length) {
       setState(() {
-        activeScreen = 'results-screen';
+        _activeScreen = 'results-screen';
       });
     }
   }
 
-  void restartQuiz() {
+  void _restartQuiz() {
     setState(() {
-      selectedAnswers.clear();
-      activeScreen = 'questions-screen';
+      _selectedAnswers.clear();
+      _activeScreen = 'questions-screen';
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Widget screenWidget = StartScreen(switchScreen);
-    Widget screenWidget = activeScreen == 'start-screen'
-        ? StartScreen(switchScreen)
-        : QuestionsScreen(onSelectAnswer: chooseAnswer);
+    // Widget screenWidget = StartScreen(_switchScreen);
+    Widget screenWidget = _activeScreen == 'start-screen'
+        ? StartScreen(_switchScreen)
+        : QuestionsScreen(onSelectAnswer: _chooseAnswer);
 
-    if (activeScreen == 'results-screen') {
+    if (_activeScreen == 'results-screen') {
       screenWidget = ResultsScreen(
-        chosenAnswers: selectedAnswers,
-        onRestart: restartQuiz,
+        chosenAnswers: _selectedAnswers,
+        onRestart: _restartQuiz,
       );
     }
 
