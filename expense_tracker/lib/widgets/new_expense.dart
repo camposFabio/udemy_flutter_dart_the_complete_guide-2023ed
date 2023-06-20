@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:expense_tracker/widgets/category_picker.dart';
+import 'package:expense_tracker/widgets/date_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -100,6 +102,15 @@ class _NewExpenseState extends State<NewExpense> {
     Navigator.pop(context);
   }
 
+  void _updateCategory(Category? category) {
+    setState(() {
+      if (category == null) {
+        return;
+      }
+      _selectedCategory = category;
+    });
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -157,45 +168,14 @@ class _NewExpenseState extends State<NewExpense> {
                 if (width >= 600)
                   Row(
                     children: [
-                      DropdownButton(
-                        value: _selectedCategory,
-                        items: Category.values
-                            .map(
-                              (category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(
-                                  category.name.toUpperCase(),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            if (value == null) {
-                              return;
-                            }
-                            _selectedCategory = value;
-                          });
-                        },
+                      CategoryPicker(
+                        selectedCategory: _selectedCategory,
+                        onSelect: _updateCategory,
                       ),
                       const SizedBox(width: 24),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              _selectedDate == null
-                                  ? 'No date selected'
-                                  : formatter.format(_selectedDate!),
-                            ),
-                            IconButton(
-                              onPressed: _presentDatePicker,
-                              icon: const Icon(Icons.calendar_month),
-                            ),
-                          ],
-                        ),
-                      ),
+                      DatePicker(
+                          selectedDate: _selectedDate,
+                          presentDatePicker: _presentDatePicker),
                     ],
                   )
                 else
@@ -212,23 +192,9 @@ class _NewExpenseState extends State<NewExpense> {
                         ),
                       ),
                       const SizedBox(width: 16),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              _selectedDate == null
-                                  ? 'No date selected'
-                                  : formatter.format(_selectedDate!),
-                            ),
-                            IconButton(
-                              onPressed: _presentDatePicker,
-                              icon: const Icon(Icons.calendar_month),
-                            ),
-                          ],
-                        ),
-                      ),
+                      DatePicker(
+                          selectedDate: _selectedDate,
+                          presentDatePicker: _presentDatePicker)
                     ],
                   ),
                 const SizedBox(
@@ -253,26 +219,9 @@ class _NewExpenseState extends State<NewExpense> {
                 else
                   Row(
                     children: [
-                      DropdownButton(
-                        value: _selectedCategory,
-                        items: Category.values
-                            .map(
-                              (category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(
-                                  category.name.toUpperCase(),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            if (value == null) {
-                              return;
-                            }
-                            _selectedCategory = value;
-                          });
-                        },
+                      CategoryPicker(
+                        selectedCategory: _selectedCategory,
+                        onSelect: _updateCategory,
                       ),
                       const Spacer(),
                       TextButton(
